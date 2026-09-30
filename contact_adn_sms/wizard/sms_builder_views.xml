@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="sms_builder_form_contact_adn" model="ir.ui.view">
+        <field name="name">sms.builder.form.contact.adn</field>
+        <field name="model">sms.builder</field>
+        <field name="inherit_id" ref="betopia_sms.sms_builder_view_form"/>
+        <field name="arch" type="xml">
+            <field name="sms_account" position="attributes">
+                <attribute name="domain">[('gateway_id.gateway', '=', 'adn_sms')]</attribute>
+            </field>
+            <field name="partner_id" position="after">
+                <field name="contact_id" invisible="1"/>
+            </field>
+        </field>
+    </record>
+</odoo>
+
