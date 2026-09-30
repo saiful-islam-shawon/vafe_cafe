@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!--
+        meta_otp_auth adds a second input named `login` for the mobile number.
+        The standard auth_signup template already uses `login` for the email.
+
+        Change ONLY the mobile input to `mobile`, so signup POST data becomes:
+            mobile  -> mobile number
+            login   -> email address / user login
+    -->
+    <template
+        id="vafecafe_signup_mobile_field_fix"
+        name="Vafe Cafe Signup Mobile Field Fix"
+        inherit_id="meta_otp_auth.meta_otp_auth_signup_fields"
+        priority="99"
+    >
+        <xpath
+            expr="(//div[contains(@class, 'field-login')]/input[@name='login'])[1]"
+            position="attributes"
+        >
+            <attribute name="name">mobile</attribute>
+            <attribute name="id">signup_mobile</attribute>
+            <attribute name="t-att-value">request.params.get('mobile', '')</attribute>
+        </xpath>
+
+        <xpath
+            expr="(//div[contains(@class, 'field-login')]/label[@for='login'])[1]"
+            position="attributes"
+        >
+            <attribute name="for">signup_mobile</attribute>
+        </xpath>
+    </template>
+
+</odoo>
