@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_server_action_form_duplicate_merge" model="ir.ui.view">
+        <field name="name">ir.actions.server.form.zencore.duplicate.merge</field>
+        <field name="model">ir.actions.server</field>
+        <field name="inherit_id" ref="base.view_server_action_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form/header" position="inside">
+                <field name="is_zencore_duplicate_merge_action" invisible="1"/>
+                <button name="action_open_zencore_duplicate_merge_wizard"
+                        string="Merge All Duplicate Data"
+                        type="object"
+                        class="btn-primary"
+                        groups="base.group_system"
+                        invisible="not is_zencore_duplicate_merge_action"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_zencore_contact_merge_wizard_form" model="ir.ui.view">
+        <field name="name">zencore.contact.merge.wizard.form</field>
+        <field name="model">zencore.contact.merge.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Merge Duplicate Contacts">
+                <group>
+                    <div class="alert alert-warning" role="alert" colspan="2">
+                        <strong>Warning:</strong>
+                        This operation merges duplicate main contacts using normalized phone numbers.
+                        The oldest contact is kept as the master. The operation is not easily reversible.
+                    </div>
+                    <field name="duplicate_group_count" readonly="1"/>
+                    <field name="duplicate_contact_count" readonly="1"/>
+                </group>
+                <footer>
+                    <button name="action_merge_all_duplicates"
+                            string="Merge Contacts"
+                            type="object"
+                            class="btn-primary"
+                            groups="base.group_system"
+                            confirm="This will merge all detected duplicate contacts. Make sure you have a current database backup. Continue?"/>
+                    <button string="Cancel" special="cancel" class="btn-secondary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

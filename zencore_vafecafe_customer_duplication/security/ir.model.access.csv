@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_zencore_contact_merge_wizard_system,zencore.contact.merge.wizard.system,model_zencore_contact_merge_wizard,base.group_system,1,1,1,1
+access_zencore_contact_merge_job_system,zencore.contact.merge.job.system,model_zencore_contact_merge_job,base.group_system,1,1,1,1
+access_zencore_contact_merge_job_line_system,zencore.contact.merge.job.line.system,model_zencore_contact_merge_job_line,base.group_system,1,1,1,1

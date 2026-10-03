@@ -1,19 +1,21 @@
 {
     "name": "Zencore Vafecafe Customer Duplication",
-    "version": "18.0.1.1.0",
+    "version": "18.0.1.3.0",
     "category": "Website/eCommerce",
-    "summary": "Prevent duplicate guest customers, signup contacts and delivery addresses",
+    "summary": "Prevent and merge duplicate customers by phone number",
     "author": "Saiful islam shawon",
     "license": "LGPL-3",
 
     "depends": [
         "website_sale",
-        "auth_signup",
         "meta_otp_auth",
     ],
 
     "data": [
-        "views/auth_signup_templates.xml",
+        "security/ir.model.access.csv",
+        "data/server_action.xml",
+        "data/contact_merge_cron.xml",
+        "views/server_action_views.xml",
     ],
 
     "installable": True,
