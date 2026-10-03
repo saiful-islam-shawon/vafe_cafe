@@ -320,8 +320,54 @@ class ZencoreContactMergeJob(models.Model):
                 'Duplicate contact merge job %s completed: %s contacts merged, %s groups failed',
                 job.id, job.merged_contacts, job.failed_groups,
             )
+            job._notify_requester_merge_completed()
 
         self.env['ir.cron']._notify_progress(done=done_now, remaining=remaining)
+
+    def _notify_requester_merge_completed(self):
+        """Notify the administrator who started the background merge.
+
+        Notification delivery is intentionally isolated from the merge itself:
+        a bus/UI notification failure must never turn a completed merge job into
+        a failed merge job.
+        """
+        for job in self:
+            if not job.requested_by or not job.requested_by.partner_id:
+                continue
+
+            if job.failed_groups:
+                title = _('Duplicate Contact Merge Completed with Errors')
+                message = _(
+                    'Merge processing finished. %(merged)s duplicate contacts were merged, '
+                    'but %(failed)s duplicate groups could not be merged.',
+                    merged=job.merged_contacts,
+                    failed=job.failed_groups,
+                )
+                notification_type = 'warning'
+            else:
+                title = _('Duplicate Contact Merge Completed Successfully')
+                message = _(
+                    'All duplicate contacts were merged successfully. %(merged)s duplicate contacts were merged.',
+                    merged=job.merged_contacts,
+                )
+                notification_type = 'success'
+
+            try:
+                self.env['bus.bus'].sudo()._sendone(
+                    job.requested_by.partner_id,
+                    'simple_notification',
+                    {
+                        'title': title,
+                        'message': message,
+                        'type': notification_type,
+                        'sticky': True,
+                    },
+                )
+            except Exception:
+                _logger.exception(
+                    'Could not send completion notification for duplicate contact merge job %s',
+                    job.id,
+                )
 
 
 class ZencoreContactMergeJobLine(models.Model):
